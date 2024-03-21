@@ -14,4 +14,3 @@ def get_i_j(letter: str):
         for j in range(0, 5):
             if (letter == matrix_of_letter[i][j]):
                 return i,j
-# print(get_i_j("я"))
