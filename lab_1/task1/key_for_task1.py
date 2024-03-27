@@ -7,16 +7,7 @@ matrix_of_letter = [
     ["э", "ю", "я", " ", " ", " "],
 ]
 
-signs = {".", ","}
 
 
-def get_i_j(letter: str) -> tuple:
-    """
-    Функция возращает индекс строки и столбца буквы из матрицы "квадрата Полибия".
-    :param letter:
-    :return tuple:
-    """
-    for i in range(0, 6):
-        for j in range(0, 6):
-            if (letter == matrix_of_letter[i][j]):
-                return i, j
+
+
