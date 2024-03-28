@@ -2,6 +2,7 @@ import constants_text
 import key_for_task2 as key
 import logging
 
+
 def frequency_analysis(text: str) -> list:
     """
     Функция возращает список пар - буква и её частота появления в тексте. Список отсортирован в убывающем порядке.

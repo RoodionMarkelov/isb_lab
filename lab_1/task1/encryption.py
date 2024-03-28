@@ -1,7 +1,9 @@
 import os
+import json
 import logging
-import constants_sign
+from constants import path, signs
 import key_for_task1 as key
+import read_json
 
 
 def get_i_j(letter: str) -> tuple:
@@ -15,8 +17,8 @@ def get_i_j(letter: str) -> tuple:
             for j in range(0, len(key.matrix_of_letter[0])):
                 if (letter == key.matrix_of_letter[i][j]):
                     return i, j
-    except Exception:
-        logging.error(f"Ошибка в функции get_i_j(letter): индекс не найден")
+    except Exception as e:
+        logging.error(f"Ошибка в функции get_i_j(letter): {e}")
 
 
 def encryption(message: str) -> str:
@@ -29,38 +31,45 @@ def encryption(message: str) -> str:
     result = ""
     try:
         for letter in message:
-            if (letter in constants_sign.signs):
+            if (letter in signs):
                 result += letter
             else:
                 place_of_letter = get_i_j(letter)
                 result += str(place_of_letter)
         return result
-    except Exception:
-        logging.error(f"Ошибка в функции encryption(message): не удалось закодировать сообщение")
+    except Exception as e:
+        logging.error(f"Ошибка в функции encryption(message): {e}")
 
 
-def encryption_text() -> None:
+def send_encryption_text() -> None:
     """
     Функция считывает сообщение из переданного пользователем файла, шифрует его и записывает в новый файл, заданным пользователем.
     :param :
     :return None:
     """
     try:
-        path_from = input("Введите полный путь к файлу с сообщением:")
-        with open(path_from, "r", encoding="UTF-8") as file1:
-            text = " ".join(line.rstrip() for line in file1)
-        encryption_text_str = encryption(text)
-        try:
-            path_to = input("Введите полный путь к папке для сохранения сообщения:")
-            file_name = input("Введите название для файла:")
-            full_path = os.path.join(path_to, file_name)
-            with open(full_path, 'w', encoding='utf-8') as file2:
-                file2.write(encryption_text_str)
-        except FileNotFoundError:
-            print('Ошибка файл не найден')
-    except FileNotFoundError:
-        print('Ошибка файл не найден')
+        json_data = read_json.read_json_file(path)
+        if json_data:
+            folder = json_data.get("folder", "")
+            path_from = json_data.get("path_from", "")
+            path_to = json_data.get("path_to", "")
+        if folder and path_from and path_to:
+            try:
+                with open(f"{path_from}", "r", encoding="utf-8") as file:
+                    message = file.read()
+                    encrypted_text = encryption(message)
+
+                with open(f"{path_to}", "w", encoding="utf-8") as file:
+                    file.write(encrypted_text)
+
+                print("Текст успешно зашифрован и сохранен в файле.")
+            except FileNotFoundError:
+                print("Один из файлов не найден.")
+            except Exception as e:
+                print(f"Произошла ошибка в функции send_encryption_text: {e}")
+    except Exception as e:
+        print(f"Произошла ошибка в функции send_encryption_text: {e}")
 
 
 if __name__ == "__main__":
-    encryption_text()
+    send_encryption_text()
