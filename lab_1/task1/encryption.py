@@ -49,10 +49,12 @@ def send_encryption_text() -> None:
     """
     try:
         json_data = read_json.read_json_file(path)
+
         if json_data:
             folder = json_data.get("folder", "")
             path_from = json_data.get("path_from", "")
             path_to = json_data.get("path_to", "")
+
         if folder and path_from and path_to:
             try:
                 with open(f"{path_from}", "r", encoding="utf-8") as file:
@@ -63,10 +65,13 @@ def send_encryption_text() -> None:
                     file.write(encrypted_text)
 
                 print("Текст успешно зашифрован и сохранен в файле.")
+
             except FileNotFoundError:
                 print("Один из файлов не найден.")
+
             except Exception as e:
                 print(f"Произошла ошибка в функции send_encryption_text: {e}")
+
     except Exception as e:
         print(f"Произошла ошибка в функции send_encryption_text: {e}")
 
