@@ -5,7 +5,8 @@ import logging
 
 def frequency_analysis(text: str) -> list:
     """
-    Функция возращает список пар - буква и её частота появления в тексте. Список отсортирован в убывающем порядке.
+    Функция считает частоту появления буквы в тексте(text).
+    Возвращает список, отсортированный по частоте в убывающем порядке.
     :param text:
     :return list:
     """
@@ -19,10 +20,11 @@ def frequency_analysis(text: str) -> list:
             else:
                 continue
         result = sorted(dictonary_of_frequency.items(), key=lambda x: x[1], reverse=True)
-        return result
-    except Exception:
+    except Exception as e:
         logging.error(f"Ошибка в функции frequency_analysis(text): не удалось вернуть список")
-
+        raise
+    else:
+        return result
 
 if __name__ == "__main__":
     message = constants_text.text
