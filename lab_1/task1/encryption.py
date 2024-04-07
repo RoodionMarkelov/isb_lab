@@ -1,9 +1,10 @@
 import os
 import json
 import logging
-from constants import path, signs
 import key_for_task1 as key
 import read_json
+
+from constants import path, signs
 
 
 def get_i_j(letter: str) -> tuple:
@@ -56,16 +57,16 @@ def message_encryption(file_name: str) -> str:
         with open(file_name, "r", encoding="utf-8") as file:
             message = file.read()
             encrypted_text = encryption(message)
+            return encrypted_text
     except FileNotFoundError:
         print("Файл не найден.")
-    else:
-        return encrypted_text
+
 
 def save_message(file_name: str, message) -> None:
     """
     Функция сохраняет сообщение(message) в указанный файл с именем file_name с перезаписыванием содержимого.
     Создает файл с именем file_name, если такого нет.
-    Функция ничего не возвращаетю
+    Функция ничего не возвращает.
     :param file_name:
     :param message:
     :return None:
@@ -77,9 +78,11 @@ def save_message(file_name: str, message) -> None:
         logging.error(f"Ошибка в функции get_i_j(letter): {e}")
         raise
 
-def encryption_text() -> None:
+
+def main() -> None:
     """
     Функция считывает сообщение из файла, шифрует его и записывает в новый файл, заданным пользователем.
+    Функция ничего не возвращает.
     :param :
     :return None:
     """
@@ -98,4 +101,4 @@ def encryption_text() -> None:
 
 
 if __name__ == "__main__":
-    encryption_text()
+    main()

@@ -1,6 +1,9 @@
-import constants_text
 import key_for_task2 as key
 import logging
+import read_json
+import os
+
+from constants import path
 
 
 def frequency_analysis(text: str) -> list:
@@ -26,8 +29,34 @@ def frequency_analysis(text: str) -> list:
     else:
         return result
 
+
+def read_file() -> str:
+    """
+    Функция считывает закодированное сообщение из файла.
+    Возращает сообщение в виде строки(str).
+    :return str:
+    """
+    json_data = read_json.read_json_file(path)
+    if json_data:
+        folder = json_data.get("folder", "")
+        path_from = json_data.get("path_from", "")
+    if folder and path_from:
+        try:
+            with open(os.path.join(folder, path_from), "r", encoding="utf-8") as file:
+                message = file.read()
+                lines = message.splitlines()
+                result = ""
+                for item in lines:
+                    result += item
+        except FileNotFoundError:
+            print("Файл не найден.")
+        else:
+            return result
+
+
 if __name__ == "__main__":
-    message = constants_text.text
+    message = read_file()
+    print(message)
     dictonary1 = frequency_analysis(message)
     print(dictonary1)
 
