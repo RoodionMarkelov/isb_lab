@@ -15,9 +15,12 @@ def get_i_j(letter: str) -> tuple:
     """
     try:
         for i in range(0, len(key.matrix_of_letter)):
-            for j in range(0, len(key.matrix_of_letter[0])):
-                if (letter == key.matrix_of_letter[i][j]):
-                    return i, j
+            try:
+                j = key.matrix_of_letter[i].index(letter)
+            except Exception:
+                continue
+            if (letter == key.matrix_of_letter[i][j]):
+                return i, j
     except Exception as e:
         logging.error(f"Ошибка в функции get_i_j(letter): {e}")
         raise
