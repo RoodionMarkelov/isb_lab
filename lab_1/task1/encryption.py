@@ -1,9 +1,8 @@
 import os
-import json
 import logging
 import key_for_task1 as key
-import read_json
 
+from lab_1 import read_json
 from constants import path, signs
 
 
@@ -86,15 +85,16 @@ def main() -> None:
     :param :
     :return None:
     """
-    json_data = read_json.read_json_file(path)
+    absolute_path = os.path.abspath(os.getcwd())
+    json_data = read_json.read_json_file(absolute_path + path)
     if json_data:
         folder = json_data.get("folder", "")
         path_from = json_data.get("path_from", "")
         path_to = json_data.get("path_to", "")
     if folder and path_from and path_to:
         try:
-            encrypted_text = message_encryption(os.path.join(folder, path_from))
-            save_message(os.path.join(folder, path_to), encrypted_text)
+            encrypted_text = message_encryption(absolute_path + folder + path_from)
+            save_message(absolute_path + folder + path_to, encrypted_text)
             print("Текст успешно зашифрован и сохранен в файле.")
         except Exception as e:
             print(f"Произошла ошибка в функции send_encryption_text: {e}")
