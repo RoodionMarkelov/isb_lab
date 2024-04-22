@@ -1,2 +1,2 @@
-signs = {".", ','}
-path = "\paths.json"
+SIGNS = {".", ','}
+PATH = "\paths.json"

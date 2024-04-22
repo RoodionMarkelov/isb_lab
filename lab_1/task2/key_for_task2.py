@@ -1,4 +1,4 @@
-dictonary_letter_value = {
+KEY = {
     "ю": "а",
     "ц": "Ч",
     "ы": " ",

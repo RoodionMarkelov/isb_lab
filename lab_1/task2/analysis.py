@@ -1,14 +1,15 @@
-import key_for_task2 as key
 import logging
 import os
 
 from lab_1 import read_json
-from constants import path
+from key_for_task2 import KEY
+from constants import PATH
 
 
 def frequency_analysis(text: str) -> list:
     """
     Функция считает частоту появления буквы в тексте(text).
+    text - это сообщение, в котором мы считаем частоту встречаемости символов.
     Возвращает список, отсортированный по частоте в убывающем порядке.
     :param text:
     :return list:
@@ -37,7 +38,7 @@ def read_file() -> str:
     :return str:
     """
     absolute_path = os.path.abspath(os.getcwd())
-    json_data = read_json.read_json_file(absolute_path + path)
+    json_data = read_json.read_json_file(absolute_path + PATH)
     if json_data:
         folder = json_data.get("folder", "")
         path_from = json_data.get("path_from", "")
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     dictonary1 = frequency_analysis(message)
     print(dictonary1)
 
-    for letter in key.dictonary_letter_value:
-        message = message.replace(key.dictonary_letter_value[letter], letter)
+    for letter in KEY:
+        message = message.replace(KEY[letter], letter)
 
     print(message)
