@@ -11,7 +11,7 @@ def get_i_j(letter: str) -> tuple:
     Функция возращает индекс строки и столбца буквы параметра letter.
     Параметр letter сравнивается с буквами из матрицы букв.
     Возвращает неизменяемый список(tuple) вида (i, j), где i - индекс строки, а j - индекс столбца.
-    :param letter:
+    :param letter: буква (str)
     :return tuple:
     """
     try:
@@ -32,7 +32,7 @@ def encryption(message: str) -> str:
     Функция шифрует переданное сообщение message согласно "квадрату Полибия".
     message переводится в нижний регистр, а затем каждая буква из message штфруется согласно "квадрату Полибия".
     Возвращает результат в виде строки(str).
-    :param message:
+    :param message: переданное сообщение (str)
     :return str:
     """
     message = message.lower()
@@ -55,7 +55,7 @@ def message_encryption(file_name: str) -> str:
     Функция  считывает сообщение из файла с именем file_name, затем шифрует его
     и возращает результат в виде строки(str).
     file_name нужен, чтобы открыть файл с сообщением, считать и зашифровать его.
-    :param file_name:
+    :param file_name: имя файла (str)
     :return str:
     """
     try:
@@ -73,8 +73,8 @@ def save_message(file_name: str, message) -> None:
     Создает файл с именем file_name, если такого нет.
     file_name нужен, чтобы открыть файл для записи сообщения.
     Функция ничего не возвращает.
-    :param file_name:
-    :param message:
+    :param file_name: имя файла (str)
+    :param message: переданное сообщение (str)
     :return None:
     """
     try:
