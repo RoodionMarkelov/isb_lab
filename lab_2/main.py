@@ -19,10 +19,13 @@ def read_json_file(file_path: str) -> dict:
             return json_data
     except FileNotFoundError:
         print("Файл не найден.")
+        raise
     except json.JSONDecodeError:
         print("Ошибка при считывании JSON-данных.")
+        raise
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
 
 def frequency_bitwise_test(sequence: str) -> float:
@@ -48,6 +51,7 @@ def frequency_bitwise_test(sequence: str) -> float:
         return P_value
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
     return P_value
 
@@ -83,6 +87,7 @@ def similar_sequences_test(sequence: str) -> float:
             return 0
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
 
 def longest_ones_sequence_test(sequence: str):
@@ -124,6 +129,7 @@ def longest_ones_sequence_test(sequence: str):
         return P_value
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
 
 def main() -> None:
@@ -156,6 +162,7 @@ def main() -> None:
             print("Longest ones sequence test: P = " + str(longest_ones_sequence_test(PYTHON_SEQUENCE)))
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
 
 if __name__ == "__main__":

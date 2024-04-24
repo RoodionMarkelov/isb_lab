@@ -20,6 +20,7 @@ def random_sequence() -> str:
         return result
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
 
 def main() -> None:
@@ -32,6 +33,7 @@ def main() -> None:
         print(string)
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        raise
 
 
 if __name__ == "__main__":
