@@ -44,7 +44,7 @@ def frequency_bitwise_test(sequence: str) -> float:
                 sum -= 1
             else:
                 sum += 1
-        S_N = (1.0 / math.sqrt(N)) * sum
+        S_N = (1.0 / math.sqrt(N)) * abs(sum)
         P_value = erfc(S_N / math.sqrt(2))
         if P_value < 0 or P_value > 1:
             raise ValueError('P should be in range [0, 1]')
