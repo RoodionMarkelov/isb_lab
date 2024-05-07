@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2f2705bc-217c-46fd-89e3-7b0f7326b302" name="Changes" comment="start work" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="lab1-var3" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;RoodionMarkelov&quot;,
+      &quot;author&quot;: &quot;RoodionMarkelov&quot;
+    },
+    {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;RoodionMarkelov&quot;,
+      &quot;reviewState&quot;: &quot;NO_REVIEW&quot;
+    },
+    {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;RoodionMarkelov&quot;,
+      &quot;reviewState&quot;: &quot;NO_REVIEW&quot;,
+      &quot;author&quot;: &quot;RoodionMarkelov&quot;
+    },
+    {
+      &quot;searchQuery&quot;: &quot;Daria-creator-lab&quot;,
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;RoodionMarkelov&quot;,
+      &quot;reviewState&quot;: &quot;NO_REVIEW&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;searchQuery&quot;: &quot;Daria-creator-lab&quot;,
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;RoodionMarkelov&quot;,
+    &quot;reviewState&quot;: &quot;NO_REVIEW&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="f3ecf832-eb7b-4bdd-a30a-22f3c982cf5e" />
+        <option name="url" value="https://github.com/RoodionMarkelov/isb_lab.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2dxJjbuwGOrovD4WrDhrsGhxuHw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rodio/PycharmProjects/isb_lab/lab_3&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_3" />
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_1\task2" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_2" />
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_1" />
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_1\task1" />
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_1\task2" />
+      <recent name="C:\Users\rodio\PycharmProjects\isb_lab\lab_1\task2\texts" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f2705bc-217c-46fd-89e3-7b0f7326b302" name="Changes" comment="" />
+      <created>1710943932519</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710943932519</updated>
+    </task>
+    <task id="LOCAL-00001" summary="task2">
+      <option name="closed" value="true" />
+      <created>1710960169817</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1710960169817</updated>
+    </task>
+    <task id="LOCAL-00002" summary="final?">
+      <option name="closed" value="true" />
+      <created>1711045671282</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1711045671282</updated>
+    </task>
+    <task id="LOCAL-00003" summary="docstring">
+      <option name="closed" value="true" />
+      <created>1711130436830</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1711130436830</updated>
+    </task>
+    <task id="LOCAL-00004" summary="text files">
+      <option name="closed" value="true" />
+      <created>1711339478879</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1711339478879</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fina????">
+      <option name="closed" value="true" />
+      <created>1711568054411</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1711568054411</updated>
+    </task>
+    <task id="LOCAL-00006" summary="json">
+      <option name="closed" value="true" />
+      <created>1711635201350</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1711635201350</updated>
+    </task>
+    <task id="LOCAL-00007" summary="decoration">
+      <option name="closed" value="true" />
+      <created>1711647946450</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1711647946450</updated>
+    </task>
+    <task id="LOCAL-00008" summary="decoration 2">
+      <option name="closed" value="true" />
+      <created>1711726224975</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1711726224975</updated>
+    </task>
+    <task id="LOCAL-00009" summary="pep">
+      <option name="closed" value="true" />
+      <created>1712514383145</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1712514383145</updated>
+    </task>
+    <task id="LOCAL-00010" summary="pep 2.0">
+      <option name="closed" value="true" />
+      <created>1713641539604</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1713641539604</updated>
+    </task>
+    <task id="LOCAL-00011" summary="pep 2.0">
+      <option name="closed" value="true" />
+      <created>1713642668777</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1713642668777</updated>
+    </task>
+    <task id="LOCAL-00012" summary="start">
+      <option name="closed" value="true" />
+      <created>1713725972001</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1713725972001</updated>
+    </task>
+    <task id="LOCAL-00013" summary="pep 3.0">
+      <option name="closed" value="true" />
+      <created>1713807223213</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1713807223213</updated>
+    </task>
+    <task id="LOCAL-00014" summary="code final">
+      <option name="closed" value="true" />
+      <created>1713968050618</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1713968050618</updated>
+    </task>
+    <task id="LOCAL-00015" summary="parameters">
+      <option name="closed" value="true" />
+      <created>1713970468569</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1713970468569</updated>
+    </task>
+    <task id="LOCAL-00016" summary="report">
+      <option name="closed" value="true" />
+      <created>1713971615032</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1713971615032</updated>
+    </task>
+    <task id="LOCAL-00017" summary="final!!!!">
+      <option name="closed" value="true" />
+      <created>1714112174584</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1714112174584</updated>
+    </task>
+    <task id="LOCAL-00018" summary="bitwise test abs()">
+      <option name="closed" value="true" />
+      <created>1714916158909</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1714916158909</updated>
+    </task>
+    <task id="LOCAL-00019" summary="start work">
+      <option name="closed" value="true" />
+      <created>1714937427037</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1714937427037</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="task2" />
+    <MESSAGE value="final?" />
+    <MESSAGE value="docstring" />
+    <MESSAGE value="text files" />
+    <MESSAGE value="fina????" />
+    <MESSAGE value="json" />
+    <MESSAGE value="decoration" />
+    <MESSAGE value="decoration 2" />
+    <MESSAGE value="PEP" />
+    <MESSAGE value="pep" />
+    <MESSAGE value="pep 2.0" />
+    <MESSAGE value="start" />
+    <MESSAGE value="pep 3.0" />
+    <MESSAGE value="code final" />
+    <MESSAGE value="parameters" />
+    <MESSAGE value="report" />
+    <MESSAGE value="final!!!!" />
+    <MESSAGE value="bitwise test abs()" />
+    <MESSAGE value="start work" />
+    <option name="LAST_COMMIT_MESSAGE" value="start work" />
+  </component>
+</project>

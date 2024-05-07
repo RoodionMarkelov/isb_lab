@@ -1,0 +1,55 @@
+Index: lab_3/main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import os\r\n\r\nfrom cryptography.hazmat.primitives.asymmetric import rsa\r\nfrom cryptography.hazmat.primitives import padding\r\nfrom cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes\r\nfrom cryptography.hazmat.primitives import serialization\r\nfrom cryptography.hazmat.primitives import hashes\r\n\r\n\r\nclass Cryptosystem:\r\n    def __init__(self, path_symmetric_key: str, path_public_key: str, path_private_key: str, size_of_key: str):\r\n        self.path_symmetric_key = path_symmetric_key\r\n        self.path_public_key = path_public_key\r\n        self.path_private_key = path_private_key\r\n        self.size_of_key = size_of_key\r\n        self.symmetric_key = None\r\n        self.public_key = None\r\n        self.private_key = None\r\n\r\n    def generate_symmetric_keys(self):\r\n        self.symmetric_key = os.urandom(self.size_of_key)\r\n\r\n    def generate_asymmetric_keys(self):\r\n        keys = rsa.generate_private_key(\r\n            public_exponent=65537,\r\n            key_size=2048\r\n        )\r\n        self.private_key = keys\r\n        self.public_key = keys.public_key()\r\n\r\n    def serialize_asymmetric_keys(self):\r\n        with open(self.path_public_key, 'wb') as public_out:\r\n            public_out.write(self.public_key.public_bytes(encoding=serialization.Encoding.PEM,\r\n                                                          format=serialization.PublicFormat.SubjectPublicKeyInfo))\r\n\r\n        with open(self.path_private_key, 'wb') as private_out:\r\n            private_out.write(self.private_key.private_bytes(encoding=serialization.Encoding.PEM,\r\n                                                             format=serialization.PrivateFormat.TraditionalOpenSSL,\r\n                                                             encryption_algorithm=serialization.NoEncryption()))\r\n\r\n    def encrypt_symmetric_key(self):\r\n        self.symmetric_key = self.public_key.encrypt(self.symmetric_key,\r\n                                                     padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),\r\n                                                                  algorithm=hashes.SHA256(),\r\n                                                                  label=None))\r\n        with open(self.path_symmetric_key, 'wb') as key_file:\r\n            key_file.write(self.symmetric_key)\r\n\r\n
+===================================================================
+diff --git a/lab_3/main.py b/lab_3/main.py
+--- a/lab_3/main.py	
++++ b/lab_3/main.py	
+@@ -20,7 +20,6 @@
+     def generate_symmetric_keys(self):
+         self.symmetric_key = os.urandom(self.size_of_key)
+ 
+-    def generate_asymmetric_keys(self):
+         keys = rsa.generate_private_key(
+             public_exponent=65537,
+             key_size=2048
+@@ -28,7 +27,6 @@
+         self.private_key = keys
+         self.public_key = keys.public_key()
+ 
+-    def serialize_asymmetric_keys(self):
+         with open(self.path_public_key, 'wb') as public_out:
+             public_out.write(self.public_key.public_bytes(encoding=serialization.Encoding.PEM,
+                                                           format=serialization.PublicFormat.SubjectPublicKeyInfo))
+@@ -37,8 +35,6 @@
+             private_out.write(self.private_key.private_bytes(encoding=serialization.Encoding.PEM,
+                                                              format=serialization.PrivateFormat.TraditionalOpenSSL,
+                                                              encryption_algorithm=serialization.NoEncryption()))
+-
+-    def encrypt_symmetric_key(self):
+         self.symmetric_key = self.public_key.encrypt(self.symmetric_key,
+                                                      padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                                                                   algorithm=hashes.SHA256(),
+@@ -46,3 +42,21 @@
+         with open(self.path_symmetric_key, 'wb') as key_file:
+             key_file.write(self.symmetric_key)
+ 
++    def ecrypt_text(self, text_for_encryption: str, path_to_save_encrypted_text: str):
++        self.symmetric_key = self.private_key.decrypt(self.symmetric_key,
++                                                      padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
++                                                                   algorithm=hashes.SHA256(), label=None))
++        padder = padding.ANSIX923(32).padder()
++        with open(text_for_encryption, 'r') as file:
++            text = file.read()
++        padded_text = padder.update(text) + padder.finalize()
++        iv = os.urandom(
++            16)  # случайное значение для инициализации блочного режима, должно быть размером с блок и каждый раз новым
++        cipher = Cipher(algorithms.AES(self.symmetric_key), modes.CBC(iv))
++        encryptor = cipher.encryptor()
++        encrypted_text = encryptor.update(padded_text) + encryptor.finalize()
++        with open(path_to_save_encrypted_text, 'wb') as save_file:
++            save_file.write(encrypted_text)
++
++    #def decrypt(self):
++
