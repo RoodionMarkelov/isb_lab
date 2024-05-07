@@ -2,8 +2,9 @@ import json
 import math
 import os
 
-from mpmath import gammainc
 from scipy.special import erfc
+from mpmath import gammainc
+
 from constants import PATH, LENGTH_OF_BLOCK, PI_I
 
 
