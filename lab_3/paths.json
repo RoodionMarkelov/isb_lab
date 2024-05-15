@@ -1,7 +1,8 @@
 {
-   "encrypted_file": "texts/encrypted_file.txt",
-    "decrypted_file": "texts/decrypted_file.txt",
-    "symmetric_key": "texts/symmetric_key.txt",
-    "public_key": "texts/public_key.txt",
-    "secret_key": "texts/secret_key.txt"
+  "text": "texts/text.txt",
+  "encrypted_file": "texts/encrypted_file.txt",
+  "decrypted_file": "texts/decrypted_file.txt",
+  "symmetric_key": "texts/symmetric_key.txt",
+  "public_key": "texts/public_key.txt",
+  "secret_key": "texts/secret_key.txt"
 }
