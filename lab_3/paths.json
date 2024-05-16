@@ -1,8 +1,8 @@
 {
   "text": "texts/text.txt",
-  "encrypted_file": "texts/encrypted_file.txt",
-  "decrypted_file": "texts/decrypted_file.txt",
+  "encrypted_file": "texts/encrypted_text.txt",
+  "decrypted_file": "texts/decrypted_text.txt",
   "symmetric_key": "texts/symmetric_key.txt",
-  "public_key": "texts/public_key.txt",
-  "secret_key": "texts/secret_key.txt"
+  "public_key": "texts/public_key.pem",
+  "private_key": "texts/private_key.pem"
 }
