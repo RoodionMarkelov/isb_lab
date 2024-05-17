@@ -40,7 +40,33 @@ def read_json_file(file_path: str) -> dict:
 
 
 class Window(QMainWindow):
+    """
+    Class for Window:
+    @methods:
+        __init__: конуструктор
+        center: расположение окна в центре экрана
+        get_file: получение пути для файла
+        create_by_default: создание криптосистемы по умолчанию
+        UiComponents: создание виджета для выбора числа битов.
+        find: получение числа битов из окна с выбором числа битов
+        create_by_user: создание криптосистемы с файлами, заданнами пользователем
+        generate_keys_for_cryptosystem: создание ключей для криптосистемы
+        encrypt_text: шифрование текста с помощью криптосистемы
+        decrypt_text: дешифрование сообщения с помощью криптосистемы
+        _quit: выход из приложения
+    """
+
     def __init__(self):
+        """
+        Конструктор для окна. Содержит поля:
+            text - текстовый файл для шифрования
+            encrypted_file - зашифрованный текстовый файл
+            decrypted_file - дешифрованный текстовый файл
+            symmetric_key - путь для файла с симметричным путем
+            public_key - путь для файла с публичным ключом
+            private_key - путь для файла с приватным ключом
+            cryptosystem - криптосистема
+        """
         super().__init__()
 
         self.text = None
@@ -118,42 +144,60 @@ class Window(QMainWindow):
 
         self.show()
 
-    def center(self):
-        """Move the window to the center. Return None"""
+    def center(self) -> None:
+        """
+        Метод перемещает окно в центр экрана.
+        """
         location = self.frameGeometry()
         center = QDesktopWidget().availableGeometry().center()
         location.moveCenter(center)
         self.move(location.topLeft())
 
-    def get_file(self):
-        """Get file from directory"""
+    def get_file(self) -> str:
+        """
+        Метод возвращает путь до файла, выбранным пользователем.
+        @return file_name: путь до выбранного файла.
+        """
         folderpath = QFileDialog.getExistingDirectory(self, "Выберете папку")
         file_name = QFileDialog.getOpenFileName(
             self, "Выберете файл", folderpath
         )
         return file_name[0]
 
-    def create_by_default(self):
-        absolute_path = os.path.abspath(os.getcwd())
-        json_data = read_json_file(absolute_path + PATH)
-        if json_data:
-            text = json_data.get("text", "")
-            encrypted_file = json_data.get("encrypted_file", "")
-            decrypted_file = json_data.get("decrypted_file", "")
-            symmetric_key = json_data.get("symmetric_key", "")
-            public_key = json_data.get("public_key", "")
-            private_key = json_data.get("private_key", "")
-        if text and encrypted_file and decrypted_file and symmetric_key and private_key and public_key :
-            self.text = absolute_path + text
-            self.encrypted_file = absolute_path + encrypted_file
-            self.decrypted_file = absolute_path + decrypted_file
-            self.symmetric_key = absolute_path + symmetric_key
-            self.public_key = absolute_path + public_key
-            self.private_key = absolute_path + private_key
-            number_of_bites = int(self.find())
-            self.cryptosystem = cryptosystem.Cryptosystem(number_of_bites)
+    def create_by_default(self) -> None:
+        """
+        Метод инициализирует поля класса по умолчанию.
+        """
+        try:
+            absolute_path = os.path.abspath(os.getcwd())
+            json_data = read_json_file(absolute_path + PATH)
+            if json_data:
+                text = json_data.get("text", "")
+                encrypted_file = json_data.get("encrypted_file", "")
+                decrypted_file = json_data.get("decrypted_file", "")
+                symmetric_key = json_data.get("symmetric_key", "")
+                public_key = json_data.get("public_key", "")
+                private_key = json_data.get("private_key", "")
+            if text and encrypted_file and decrypted_file and symmetric_key and private_key and public_key:
+                self.text = absolute_path + text
+                self.encrypted_file = absolute_path + encrypted_file
+                self.decrypted_file = absolute_path + decrypted_file
+                self.symmetric_key = absolute_path + symmetric_key
+                self.public_key = absolute_path + public_key
+                self.private_key = absolute_path + private_key
+                number_of_bites = int(self.find())
+                self.cryptosystem = cryptosystem.Cryptosystem(number_of_bites)
+        except FileNotFoundError:
+            print("Один из файлов не найден.")
+            raise
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
+            raise
 
-    def UiComponents(self):
+    def UiComponents(self) -> None:
+        """
+        Метод создает виджет для выбора числа битов для шифрования.
+        """
         self.combo_box = QComboBox(self)
 
         self.combo_box.setGeometry(400, 200, 50, 30)
@@ -162,13 +206,18 @@ class Window(QMainWindow):
 
         self.combo_box.addItems(list_of_number_of_bits)
 
-    def find(self):
-
+    def find(self) -> str:
+        """
+        Метод возвращает содержимое виджета для числа битов.
+        @return content: содержимое виджета для числа битов. Тип str.
+        """
         content = self.combo_box.currentText()
+        return content
 
-        self.label.setText("Content : " + content)
-
-    def create_by_user(self):
+    def create_by_user(self) -> None:
+        """
+        Метод инициализирует поля класса значениями пользователя.
+        """
         self.text = self.get_file()
         self.encrypted_file = self.get_file()
         self.decrypted_file = self.get_file()
@@ -178,20 +227,38 @@ class Window(QMainWindow):
         number_of_bites = int(self.find())
         self.cryptosystem = cryptosystem.Cryptosystem(number_of_bites)
 
-    def generate_keys_for_cryptosystem(self):
+    def generate_keys_for_cryptosystem(self) -> None:
+        """
+        Метод генерирует ключи для криптосистемы.
+        """
+        if not self.cryptosystem:
+            self.messagelabel.setText("Для начала создайте криптосистему!")
+            return
         self.cryptosystem.generate_keys(self.symmetric_key, self.public_key, self.private_key)
         self.messagelabel.setText("Ключи созданы.")
 
-    def encrypt_text(self):
+    def encrypt_text(self) -> None:
+        """
+        Метод шифрует текст с помомщью криптосистемы.
+        """
+        if not self.cryptosystem:
+            self.messagelabel.setText("Для начала создайте криптосистему!")
+            return
         self.cryptosystem.encrypt(self.text, self.symmetric_key, self.private_key, self.encrypted_file)
         self.messagelabel.setText("Текст зашифрован.")
 
-    def decrypt_text(self):
+    def decrypt_text(self) -> None:
+        """
+        Метод дешифрует тест с помощью криптосистемы.
+        """
+        if not self.cryptosystem:
+            self.messagelabel.setText("Для начала создайте криптосистему!")
+            return
         self.cryptosystem.decrypt(self.encrypted_file, self.symmetric_key, self.private_key, self.decrypted_file)
         self.messagelabel.setText("Текст дешифрован.")
 
-    def _quit(self):
-        """Get MessageBox for exit"""
+    def _quit(self) -> None:
+        """Получение MessageBox для выхода"""
         reply = QMessageBox.question(
             self,
             "Сообщение",

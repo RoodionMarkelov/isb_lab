@@ -5,29 +5,72 @@ from save_and_read_text import read_text, save_text
 
 
 class Cryptosystem:
-    def __init__(self, number_of_bites):
+    """
+    Class for Cryptosystem:
+    @methods:
+        __init__:
+        generate_keys:
+        encrypt:
+        decrypt:
+
+    """
+
+    def __init__(self, number_of_bites: int):
+        """
+        Конструктор для класса.
+        атрибуты:
+        symmetric - объект класса SymmetricKey()
+        asymmetric - объект класса AsymmetricKey()
+        number_of_bites - число битов для шифрования.
+        @param number_of_bites:
+        """
         self.symmetric = symmetric_key.SymmetricKey()
         self.asymmetric = asymmetric_key.AsymmetricKey()
         self.number_of_bites = number_of_bites
 
-    def generate_keys(self, path_to_symmetric_key, path_to_public_key, path_to_private_key):
-        self.symmetric.generate_key(self.number_of_bites)
+    def generate_keys(self, path_to_symmetric_key: str, path_to_public_key: str, path_to_private_key: str) -> None:
+        """
+        Метод генерирует ключи для симметричнего и асимметричного алгоритма шифрования и
+        сохраняет их по указанным путям.
+        @param path_to_symmetric_key: путь до файла с симметричным ключом. Тип str.
+        @param path_to_public_key: путь до файла с публичным ключом. Тип str.
+        @param path_to_private_key: путь до файла с приватным ключом. Тип str.
+        """
+        symmetric_key = self.symmetric.generate_key(self.number_of_bites)
         keys = self.asymmetric.generate_keys()
-        self.asymmetric.serialization_keys(path_to_private_key, path_to_public_key, keys[0], keys[1])
-        symmetric_key_encrypted = self.asymmetric.encrypt_text(self.symmetric.symmetric_key, keys[1])
-        self.symmetric.serialization_key(path_to_symmetric_key, symmetric_key_encrypted)
+        self.asymmetric.serialize_keys(path_to_private_key, path_to_public_key, keys[0], keys[1])
+        symmetric_key_encrypted = self.asymmetric.encrypt_text(symmetric_key, keys[1])
+        self.symmetric.serialize_key(path_to_symmetric_key, symmetric_key_encrypted)
 
-    def encrypt(self, path_to_text_for_encryption, path_to_symmetric_key, path_to_private_key,
-                path_to_save_encrypted_text):
-        encrypted_symmetric_key = self.symmetric.deserialization_key(path_to_symmetric_key)
+    def encrypt(self, path_to_text_for_encryption: str, path_to_symmetric_key: str, path_to_private_key: str,
+                path_to_save_encrypted_text: str) -> None:
+        """
+        Метод шифрует переданный текст из файла path_to_text_for_encryption с помощью
+        симметричного и приватного ключей из файлов path_to_symmetric_key и path_to_private_key,
+        после сохраняет зашифрованный текст в файле path_to_save_encrypted_text.
+        @param path_to_text_for_encryption: путь до текста, который нужно зашифровать. Тип str.
+        @param path_to_symmetric_key: Путь до файла с симметричным ключом. Тип str.
+        @param path_to_private_key: Путь до файла с приватным ключом. Тип str.
+        @param path_to_save_encrypted_text: Путь для сохранения зашифрованного сообщения. Тип str.
+        """
+        encrypted_symmetric_key = self.symmetric.deserialize_key(path_to_symmetric_key)
         decrypted_symmetric_key = self.asymmetric.decrypt_text(path_to_private_key, encrypted_symmetric_key)
         text = read_text(path_to_text_for_encryption)
         encrypted_text = self.symmetric.encrypt_symmetric(text, decrypted_symmetric_key, self.number_of_bites)
         save_text(path_to_save_encrypted_text, encrypted_text)
 
-    def decrypt(self, path_to_encrypted_text, path_to_symmetric_key, path_to_private_key,
-                path_to_save_decrypted_text):
-        encrypted_symmetric_key = self.symmetric.deserialization_key(path_to_symmetric_key)
+    def decrypt(self, path_to_encrypted_text: str, path_to_symmetric_key: str, path_to_private_key: str,
+                path_to_save_decrypted_text: str) -> None:
+        """
+        Метод дешифрует переданный текст из файла path_to_encrypted_text с помощью
+        симметричного и приватного ключей из файлов path_to_symmetric_key и path_to_private_key,
+        после чего сохраняет его в файле path_to_save_decrypted_text.
+        @param path_to_encrypted_text: Путь до файла для дешифрования. Тип str.
+        @param path_to_symmetric_key: Путь до файла с симметричным ключом. Тип str.
+        @param path_to_private_key: Путь до файла с приватным ключом. Тип str.
+        @param path_to_save_decrypted_text: Путь для сохранения дешифрованного текста. Тип str.
+        """
+        encrypted_symmetric_key = self.symmetric.deserialize_key(path_to_symmetric_key)
         decrypted_symmetric_key = self.asymmetric.decrypt_text(path_to_private_key, encrypted_symmetric_key)
         encrypted_text = read_text(path_to_encrypted_text)
         decrypted_text = self.symmetric.decrypt_symmetric(encrypted_text, decrypted_symmetric_key)

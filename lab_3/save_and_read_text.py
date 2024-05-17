@@ -1,9 +1,33 @@
-def save_text(file_name: str, text: bytes):
-    with open(file_name, 'wb') as file:
-        file.write(text)
+def save_text(file_name: str, text: str):
+    """
+    Функция записывает текст (text) в файл с названием file_name.
+    @param file_name: название файла для зааписи текста. Тип str.
+    @param text: текст для сохранения. Тип str.
+    """
+    try:
+        with open(file_name, 'wb') as file:
+            file.write(text)
+    except FileNotFoundError:
+        print("Файл не найден.")
+        raise
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+        raise
 
 
 def read_text(file_name: str):
-    with open(file_name, mode='rb') as key_file:
-        content = key_file.read()
-    return content
+    """
+    Функция считывает текст из файла с названием file_name. Затем возвращает считанный текст.
+    @param file_name: название файла для считывания.Тип str.
+    @return content: содержимое файла. Тип str.
+    """
+    try:
+        with open(file_name, mode='rb') as key_file:
+            content = key_file.read()
+        return content
+    except FileNotFoundError:
+        print("Файл не найден.")
+        raise
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+        raise
