@@ -1,7 +1,7 @@
 import symmetric_key
 import asymmetric_key
 
-from save_and_read_text import read_text, save_text
+from save_and_read_text import read_text, save_text, save_text_str
 
 
 class Cryptosystem:
@@ -15,18 +15,18 @@ class Cryptosystem:
 
     """
 
-    def __init__(self, number_of_bites: int):
+    def __init__(self, number_of_bits: int):
         """
         Конструктор для класса.
         атрибуты:
         symmetric - объект класса SymmetricKey()
         asymmetric - объект класса AsymmetricKey()
-        number_of_bites - число битов для шифрования.
-        @param number_of_bites:
+        number_of_bits - число битов для шифрования.
+        @param number_of_bits:
         """
         self.symmetric = symmetric_key.SymmetricKey()
         self.asymmetric = asymmetric_key.AsymmetricKey()
-        self.number_of_bites = number_of_bites
+        self.number_of_bits = number_of_bits
 
     def generate_keys(self, path_to_symmetric_key: str, path_to_public_key: str, path_to_private_key: str) -> None:
         """
@@ -36,7 +36,7 @@ class Cryptosystem:
         @param path_to_public_key: путь до файла с публичным ключом. Тип str.
         @param path_to_private_key: путь до файла с приватным ключом. Тип str.
         """
-        symmetric_key = self.symmetric.generate_key(self.number_of_bites)
+        symmetric_key = self.symmetric.generate_key(self.number_of_bits)
         keys = self.asymmetric.generate_keys()
         self.asymmetric.serialize_keys(path_to_private_key, path_to_public_key, keys[0], keys[1])
         symmetric_key_encrypted = self.asymmetric.encrypt_text(symmetric_key, keys[1])
@@ -56,7 +56,7 @@ class Cryptosystem:
         encrypted_symmetric_key = self.symmetric.deserialize_key(path_to_symmetric_key)
         decrypted_symmetric_key = self.asymmetric.decrypt_text(path_to_private_key, encrypted_symmetric_key)
         text = read_text(path_to_text_for_encryption)
-        encrypted_text = self.symmetric.encrypt_symmetric(text, decrypted_symmetric_key, self.number_of_bites)
+        encrypted_text = self.symmetric.encrypt_symmetric(text, decrypted_symmetric_key, self.number_of_bits)
         save_text(path_to_save_encrypted_text, encrypted_text)
 
     def decrypt(self, path_to_encrypted_text: str, path_to_symmetric_key: str, path_to_private_key: str,
@@ -73,5 +73,5 @@ class Cryptosystem:
         encrypted_symmetric_key = self.symmetric.deserialize_key(path_to_symmetric_key)
         decrypted_symmetric_key = self.asymmetric.decrypt_text(path_to_private_key, encrypted_symmetric_key)
         encrypted_text = read_text(path_to_encrypted_text)
-        decrypted_text = self.symmetric.decrypt_symmetric(encrypted_text, decrypted_symmetric_key)
-        save_text(path_to_save_decrypted_text, decrypted_text)
+        decrypted_text = self.symmetric.decrypt_symmetric(encrypted_text, decrypted_symmetric_key, self.number_of_bits)
+        save_text_str(path_to_save_decrypted_text, decrypted_text)

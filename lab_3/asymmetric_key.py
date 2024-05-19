@@ -35,7 +35,7 @@ class AsymmetricKey:
             print("Файл не найден.")
             raise
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка serialize_private: {e}")
             raise
 
     def serialize_public(self, path_to_public_key: str, public_key: rsa.RSAPublicKey) -> None:
@@ -52,7 +52,7 @@ class AsymmetricKey:
             print("Файл не найден.")
             raise
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка serialize_public: {e}")
             raise
 
     def serialize_keys(self, path_to_private_key: str, path_to_public_key: str, private_key: rsa.RSAPrivateKey,
@@ -84,7 +84,7 @@ class AsymmetricKey:
             print("Файл не найден.")
             raise
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка deserialize_private: {e}")
             raise
 
     def deserialize_public(self, path_to_public_key: str) -> rsa.RSAPublicKey:
@@ -102,7 +102,7 @@ class AsymmetricKey:
             print("Файл не найден.")
             raise
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка deserialize_public: {e}")
             raise
 
     def generate_keys(self) -> tuple:
@@ -119,7 +119,7 @@ class AsymmetricKey:
             public_key = keys.public_key()
             return private_key, public_key
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка generate_keys: {e}")
             raise
 
     def encrypt_text(self, text: bytes, public_key: rsa.RSAPublicKey) -> bytes:
@@ -137,7 +137,7 @@ class AsymmetricKey:
                                                              label=None))
             return encrypted_text
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка encrypt_text: {e}")
             raise
 
     def decrypt_text(self, path_to_private_key: str, encrypted_text: bytes) -> bytes:
@@ -156,5 +156,5 @@ class AsymmetricKey:
                                                               algorithm=hashes.SHA256(), label=None))
             return decrypted_text
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка decrypt_text: {e}")
             raise

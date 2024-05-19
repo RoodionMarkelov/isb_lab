@@ -1,6 +1,6 @@
 import os
 
-from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 
@@ -28,7 +28,7 @@ class SymmetricKey:
             print("Файл не найден.")
             raise
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка serialize_key: {e}")
             raise
 
     def deserialize_key(self, path_to_symmetric_key: str) -> bytes:
@@ -45,7 +45,7 @@ class SymmetricKey:
             print("Файл не найден.")
             raise
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка deserialize_key: {e}")
             raise
 
     def generate_key(self, number_of_bites: int) -> bytes:
@@ -55,31 +55,32 @@ class SymmetricKey:
         @return symmetric_key: симметричный ключ. Тип bytes.
         """
         try:
-            symmetric_key = bytes(os.urandom(number_of_bites))
+            symmetric_key = bytes(os.urandom(int(number_of_bites / 8)))
             return symmetric_key
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка в функции generate_key: {e}")
         raise
 
-    def encrypt_symmetric(self, text: str, symmetric_key: bytes, number_of_bites: int) -> bytes:
+    def encrypt_symmetric(self, text: bytes, symmetric_key: bytes, number_of_bites: int) -> bytes:
         """
         Метод шифрует текст(text) с помощью симметричного ключа(symmetric_key) с заданным
         количеством битов(number_of_bites). Возвращает зашифрованный текст.
-        @param text: текст для шифрования. Тип str.
+        @param text: текст для шифрования. Тип bytes.
         @param symmetric_key: симмитричный ключ для шифрования. Тип bytes.
         @param number_of_bites: количество битов для шифрования. тип int.
         @return encrypted_text: зашифрованный текст.
         """
         try:
-            padder = padding.ANSIX923(number_of_bites).padder()
+            padder = padding.PKCS7(number_of_bites).padder()
             padded_text = padder.update(text) + padder.finalize()
-            iv = os.urandom(number_of_bites)
-            cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(iv))
+            iv = os.urandom(int(number_of_bites / 8))
+            cipher = Cipher(algorithms.TripleDES(symmetric_key), modes.CBC(iv))
             encryptor = cipher.encryptor()
             encrypted_text = encryptor.update(padded_text) + encryptor.finalize()
+            encrypted_text = iv + encrypted_text
             return encrypted_text
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка в функции encrypt_symmetric: {e}")
             raise
 
     def decrypt_symmetric(self, encrypted_text: bytes, symmetric_key: bytes, number_of_bites: int) -> str:
@@ -92,13 +93,15 @@ class SymmetricKey:
         @return unpadded_decrypted_text.decode('UTF-8'): расшифрованный текст. Тип str.
         """
         try:
-            iv = os.urandom(number_of_bites)
-            cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(iv))
+            size_of_key = int(number_of_bites / 8)
+            iv = encrypted_text[: size_of_key]
+            encrypted_text = encrypted_text[size_of_key:]
+            cipher = Cipher(algorithms.TripleDES(symmetric_key), modes.CBC(iv))
             decryptor = cipher.decryptor()
             decrypted_text = decryptor.update(encrypted_text) + decryptor.finalize()
-            unpadder = padding.ANSIX923(number_of_bites).unpadder()
+            unpadder = padding.PKCS7(number_of_bites).unpadder()
             unpadded_decrypted_text = unpadder.update(decrypted_text) + unpadder.finalize()
             return unpadded_decrypted_text.decode('UTF-8')
         except Exception as e:
-            print(f"Произошла ошибка: {e}")
+            print(f"Произошла ошибка в функции decrypt_symmetric: {e}")
             raise

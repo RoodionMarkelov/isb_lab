@@ -1,1 +1,1 @@
-PATH = "paths.json"
+PATH = "/paths.json"

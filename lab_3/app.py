@@ -75,6 +75,7 @@ class Window(QMainWindow):
         self.symmetric_key = None
         self.public_key = None
         self.private_key = None
+        self.number_of_bits = None
         self.cryptosystem = None
 
         QToolTip.setFont(QFont("SansSerif", 14))
@@ -83,7 +84,7 @@ class Window(QMainWindow):
         self.messagelabel = QLabel(self)
         self.messagelabel.setText("Привет пользователь!")
         self.messagelabel.adjustSize()
-        self.messagelabel.move(200, 50)
+        self.messagelabel.move(100, 50)
 
         self.label_number_of_bits = QLabel(self)
         self.label_number_of_bits.setText("Количество битов:")
@@ -185,8 +186,10 @@ class Window(QMainWindow):
                 self.symmetric_key = absolute_path + symmetric_key
                 self.public_key = absolute_path + public_key
                 self.private_key = absolute_path + private_key
-                number_of_bites = int(self.find())
-                self.cryptosystem = cryptosystem.Cryptosystem(number_of_bites)
+                self.number_of_bits = int(self.find())
+                self.cryptosystem = cryptosystem.Cryptosystem(self.number_of_bits)
+                self.messagelabel.setText("Система по умолчанию создана.")
+                self.messagelabel.adjustSize()
         except FileNotFoundError:
             print("Один из файлов не найден.")
             raise
@@ -224,8 +227,10 @@ class Window(QMainWindow):
         self.symmetric_key = self.get_file()
         self.public_key = self.get_file()
         self.private_key = self.get_file()
-        number_of_bites = int(self.find())
-        self.cryptosystem = cryptosystem.Cryptosystem(number_of_bites)
+        self.number_of_bits = int(self.find())
+        self.cryptosystem = cryptosystem.Cryptosystem(self.number_of_bites)
+        self.messagelabel.setText("Система с пользовательскими файлами создана.")
+        self.messagelabel.adjustSize()
 
     def generate_keys_for_cryptosystem(self) -> None:
         """
@@ -233,9 +238,11 @@ class Window(QMainWindow):
         """
         if not self.cryptosystem:
             self.messagelabel.setText("Для начала создайте криптосистему!")
+            self.messagelabel.adjustSize()
             return
         self.cryptosystem.generate_keys(self.symmetric_key, self.public_key, self.private_key)
         self.messagelabel.setText("Ключи созданы.")
+        self.messagelabel.adjustSize()
 
     def encrypt_text(self) -> None:
         """
@@ -243,9 +250,15 @@ class Window(QMainWindow):
         """
         if not self.cryptosystem:
             self.messagelabel.setText("Для начала создайте криптосистему!")
+            self.messagelabel.adjustSize()
+            return
+        if self.number_of_bits != self.cryptosystem.number_of_bits:
+            self.messagelabel.setText("система была изменена. Сгенерируйте ключи заново.")
+            self.messagelabel.adjustSize()
             return
         self.cryptosystem.encrypt(self.text, self.symmetric_key, self.private_key, self.encrypted_file)
         self.messagelabel.setText("Текст зашифрован.")
+        self.messagelabel.adjustSize()
 
     def decrypt_text(self) -> None:
         """
@@ -253,6 +266,11 @@ class Window(QMainWindow):
         """
         if not self.cryptosystem:
             self.messagelabel.setText("Для начала создайте криптосистему!")
+            self.messagelabel.adjustSize()
+            return
+        if self.number_of_bits != self.cryptosystem.number_of_bits:
+            self.messagelabel.setText("система была изменена. Сгенерируйте ключи заново.")
+            self.messagelabel.adjustSize()
             return
         self.cryptosystem.decrypt(self.encrypted_file, self.symmetric_key, self.private_key, self.decrypted_file)
         self.messagelabel.setText("Текст дешифрован.")

@@ -1,8 +1,8 @@
-def save_text(file_name: str, text: str):
+def save_text(file_name: str, text: bytes):
     """
     Функция записывает текст (text) в файл с названием file_name.
-    @param file_name: название файла для зааписи текста. Тип str.
-    @param text: текст для сохранения. Тип str.
+    @param file_name: название файла для записи текста. Тип str.
+    @param text: текст для сохранения  в байтах. Тип bytes.
     """
     try:
         with open(file_name, 'wb') as file:
@@ -11,7 +11,24 @@ def save_text(file_name: str, text: str):
         print("Файл не найден.")
         raise
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Произошла ошибка save_text: {e}")
+        raise
+
+
+def save_text_str(file_name: str, text: str):
+    """
+    Функция записывает текст (text) в файл с названием file_name.
+    @param file_name: название файла для записи текста. Тип str.
+    @param text: текст для сохранения  в.виде строки Тип str.
+    """
+    try:
+        with open(file_name, 'w') as file:
+            file.write(text)
+    except FileNotFoundError:
+        print("Файл не найден.")
+        raise
+    except Exception as e:
+        print(f"Произошла ошибка save_text_str: {e}")
         raise
 
 
@@ -29,5 +46,5 @@ def read_text(file_name: str):
         print("Файл не найден.")
         raise
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Произошла ошибка read_text: {e}")
         raise
