@@ -1,4 +1,3 @@
-import json
 import sys
 import os
 
@@ -12,31 +11,11 @@ from PyQt5.QtWidgets import (
     QLabel,
     QMessageBox, QComboBox,
 )
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QFont
 
-import cryptosystem
+from cryptosystem import Cryptosystem
+from serialization_deserialitation_and_text import read_json_file
 from constants import PATH
-
-
-def read_json_file(file_path: str) -> dict:
-    """
-    Функция считывает данные из JSON файла.
-    :param file_path: указывает на расположение JSON файла.
-    :return dict:
-    """
-    try:
-        with open(file_path, "r", encoding="UTF-8") as file:
-            json_data = json.load(file)
-            return json_data
-    except FileNotFoundError:
-        print("Файл не найден.")
-        raise
-    except json.JSONDecodeError:
-        print("Ошибка при считывании JSON-данных.")
-        raise
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
-        raise
 
 
 class Window(QMainWindow):
@@ -69,13 +48,6 @@ class Window(QMainWindow):
         """
         super().__init__()
 
-        self.text = None
-        self.encrypted_file = None
-        self.decrypted_file = None
-        self.symmetric_key = None
-        self.public_key = None
-        self.private_key = None
-        self.number_of_bits = None
         self.cryptosystem = None
 
         QToolTip.setFont(QFont("SansSerif", 14))
@@ -89,61 +61,107 @@ class Window(QMainWindow):
         self.label_number_of_bits = QLabel(self)
         self.label_number_of_bits.setText("Количество битов:")
         self.label_number_of_bits.adjustSize()
-        self.label_number_of_bits.move(290, 207)
-
+        self.label_number_of_bits.move(290, 20)
         self.UiComponents()
 
-        btn1 = QPushButton("Инициализация криптосистемы по умолчанию", self)
+        self.load_default_files()
+
+        btn1 = QPushButton("Инициализация криптосистемы", self)
         btn1.setToolTip(
             "Нажмите на кнопку для создание файлов для ключей криптосистемы по умолчанию."
         )
-        btn1.clicked.connect(self.create_by_default)
+        btn1.clicked.connect(self.create_cryptosystem)
         btn1.resize(btn1.sizeHint())
         btn1.move(50, 100)
 
-        btn2 = QPushButton("Инициализация криптосистемы пользователем", self)
+        btn2 = QPushButton("Создание ключей", self)
         btn2.setToolTip(
-            "Нажмите на кнопку для выбора файлов для ключей криптосистемы."
-        )
-        btn2.clicked.connect(self.create_by_user)
-        btn2.resize(btn2.sizeHint())
-        btn2.move(50, 150)
-
-        btn3 = QPushButton("Создание ключей", self)
-        btn3.setToolTip(
             "Нажмите на кнопку для создание ключей криптосистемы."
         )
-        btn3.clicked.connect(self.generate_keys_for_cryptosystem)
+        btn2.clicked.connect(self.generate_keys_for_cryptosystem)
+        (btn2
+         .resize(btn2.sizeHint()))
+        btn2.move(50, 150)
+
+        btn3 = QPushButton("Зашифровать текст", self)
+        btn3.setToolTip(
+            "Нажмите на кнопку для шифрования текста."
+        )
+        btn3.clicked.connect(self.encrypt_text)
         btn3.resize(btn3.sizeHint())
         btn3.move(50, 200)
 
-        btn4 = QPushButton("Зашифровать текст", self)
+        btn4 = QPushButton("Дешифровать текст", self)
         btn4.setToolTip(
-            "Нажмите на кнопку для шифрования текста."
+            "Нажмите на кнопку для дешифрования текста."
         )
-        btn4.clicked.connect(self.encrypt_text)
+        btn4.clicked.connect(self.decrypt_text)
         btn4.resize(btn4.sizeHint())
         btn4.move(50, 250)
 
-        btn5 = QPushButton("Дешифровать текст", self)
+        btn5 = QPushButton("Создание ключей в пользовательские файлы", self)
         btn5.setToolTip(
-            "Нажмите на кнопку для дешифрования текста."
+            "Нажмите на кнопку для создание ключей криптосистемы в пользовательские файлы."
         )
-        btn5.clicked.connect(self.decrypt_text)
-        btn5.resize(btn4.sizeHint())
-        btn5.move(50, 300)
+        btn5.clicked.connect(self.generate_keys_for_user)
+        btn5.resize(btn5.sizeHint())
+        btn5.move(200, 150)
+
+        btn6 = QPushButton("Зашифровать пользовательский текст", self)
+        btn6.setToolTip(
+            "Нажмите на кнопку для шифрования пользовательского текста."
+        )
+        btn6.clicked.connect(self.encrypt_user_text)
+        btn6.resize(btn6.sizeHint())
+        btn6.move(200, 200)
+
+        btn7 = QPushButton("Дешифровать пользовательский текст", self)
+        btn7.setToolTip(
+            "Нажмите на кнопку для дешифрования пользовательского текста."
+        )
+        btn7.clicked.connect(self.decrypt_user_text)
+        btn7.resize(btn7.sizeHint())
+        btn7.move(200, 250)
 
         qbtn = QPushButton("Выход", self)
         qbtn.setToolTip("Нажмите для кнопки для выхода.")
         qbtn.clicked.connect(self._quit)
         qbtn.resize(qbtn.sizeHint())
         qbtn.move(350, 400)
-        self.resize(500, 500)
+        self.resize(500, 450)
         self.center()
         self.setWindowTitle("app")
-        self.setWindowIcon(QIcon("web.png"))
 
         self.show()
+
+    def load_default_files(self):
+        try:
+            absolute_path = os.path.abspath(os.getcwd())
+            json_data = read_json_file(absolute_path + PATH)
+            if json_data:
+                text = json_data.get("text", "")
+                encrypted_file = json_data.get("encrypted_file", "")
+                decrypted_file = json_data.get("decrypted_file", "")
+                symmetric_key = json_data.get("symmetric_key", "")
+                public_key = json_data.get("public_key", "")
+                private_key = json_data.get("private_key", "")
+            if text and encrypted_file and decrypted_file and symmetric_key and private_key and public_key:
+                self.text = absolute_path + text
+                self.encrypted_file = absolute_path + encrypted_file
+                self.decrypted_file = absolute_path + decrypted_file
+                self.symmetric_key = absolute_path + symmetric_key
+                self.public_key = absolute_path + public_key
+                self.private_key = absolute_path + private_key
+                number_of_bits = int(self.find())
+                self.cryptosystem = Cryptosystem(number_of_bits)
+                self.messagelabel.setText("Система по умолчанию создана.")
+                self.messagelabel.adjustSize()
+        except FileNotFoundError:
+            print("Один из файлов не найден.")
+            raise
+        except Exception as e:
+            print(f"Произошла ошибка: {e}")
+            raise
 
     def center(self) -> None:
         """
@@ -165,34 +183,15 @@ class Window(QMainWindow):
         )
         return file_name[0]
 
-    def create_by_default(self) -> None:
+    def create_cryptosystem(self) -> None:
         """
-        Метод инициализирует поля класса по умолчанию.
+        Метод инициализирует криптосистему для класса.
         """
         try:
-            absolute_path = os.path.abspath(os.getcwd())
-            json_data = read_json_file(absolute_path + PATH)
-            if json_data:
-                text = json_data.get("text", "")
-                encrypted_file = json_data.get("encrypted_file", "")
-                decrypted_file = json_data.get("decrypted_file", "")
-                symmetric_key = json_data.get("symmetric_key", "")
-                public_key = json_data.get("public_key", "")
-                private_key = json_data.get("private_key", "")
-            if text and encrypted_file and decrypted_file and symmetric_key and private_key and public_key:
-                self.text = absolute_path + text
-                self.encrypted_file = absolute_path + encrypted_file
-                self.decrypted_file = absolute_path + decrypted_file
-                self.symmetric_key = absolute_path + symmetric_key
-                self.public_key = absolute_path + public_key
-                self.private_key = absolute_path + private_key
-                self.number_of_bits = int(self.find())
-                self.cryptosystem = cryptosystem.Cryptosystem(self.number_of_bits)
-                self.messagelabel.setText("Система по умолчанию создана.")
-                self.messagelabel.adjustSize()
-        except FileNotFoundError:
-            print("Один из файлов не найден.")
-            raise
+            number_of_bits = int(self.find())
+            self.cryptosystem = Cryptosystem(number_of_bits)
+            self.messagelabel.setText("Система создана.")
+            self.messagelabel.adjustSize()
         except Exception as e:
             print(f"Произошла ошибка: {e}")
             raise
@@ -203,7 +202,7 @@ class Window(QMainWindow):
         """
         self.combo_box = QComboBox(self)
 
-        self.combo_box.setGeometry(400, 200, 50, 30)
+        self.combo_box.setGeometry(400, 10, 50, 30)
 
         list_of_number_of_bits = ["64", "128", "192"]
 
@@ -216,21 +215,6 @@ class Window(QMainWindow):
         """
         content = self.combo_box.currentText()
         return content
-
-    def create_by_user(self) -> None:
-        """
-        Метод инициализирует поля класса значениями пользователя.
-        """
-        self.text = self.get_file()
-        self.encrypted_file = self.get_file()
-        self.decrypted_file = self.get_file()
-        self.symmetric_key = self.get_file()
-        self.public_key = self.get_file()
-        self.private_key = self.get_file()
-        self.number_of_bits = int(self.find())
-        self.cryptosystem = cryptosystem.Cryptosystem(self.number_of_bites)
-        self.messagelabel.setText("Система с пользовательскими файлами создана.")
-        self.messagelabel.adjustSize()
 
     def generate_keys_for_cryptosystem(self) -> None:
         """
@@ -252,10 +236,6 @@ class Window(QMainWindow):
             self.messagelabel.setText("Для начала создайте криптосистему!")
             self.messagelabel.adjustSize()
             return
-        if self.number_of_bits != self.cryptosystem.number_of_bits:
-            self.messagelabel.setText("система была изменена. Сгенерируйте ключи заново.")
-            self.messagelabel.adjustSize()
-            return
         self.cryptosystem.encrypt(self.text, self.symmetric_key, self.private_key, self.encrypted_file)
         self.messagelabel.setText("Текст зашифрован.")
         self.messagelabel.adjustSize()
@@ -268,12 +248,70 @@ class Window(QMainWindow):
             self.messagelabel.setText("Для начала создайте криптосистему!")
             self.messagelabel.adjustSize()
             return
-        if self.number_of_bits != self.cryptosystem.number_of_bits:
-            self.messagelabel.setText("система была изменена. Сгенерируйте ключи заново.")
-            self.messagelabel.adjustSize()
-            return
         self.cryptosystem.decrypt(self.encrypted_file, self.symmetric_key, self.private_key, self.decrypted_file)
         self.messagelabel.setText("Текст дешифрован.")
+
+    def generate_keys_for_user(self):
+        """
+        Метод генерирует ключи в пользовательские файлы.
+        """
+        if not self.cryptosystem:
+            self.messagelabel.setText("Для начала создайте криптосистему!")
+            self.messagelabel.adjustSize()
+            return
+        user_symmetric_key = self.get_file()
+        user_public_key = self.get_file()
+        user_private_key = self.get_file()
+        if user_symmetric_key and user_public_key and user_private_key:
+            self.cryptosystem.generate_keys(user_symmetric_key, user_public_key, user_private_key)
+            self.messagelabel.setText("Ключи созданы.")
+            self.messagelabel.adjustSize()
+        else:
+            self.messagelabel.setText("Ключи не созданы! Укажите все файлы.")
+            self.messagelabel.adjustSize()
+            return
+
+    def encrypt_user_text(self):
+        """
+        Метод шифрует пользовательсктй текст.
+        """
+        if not self.cryptosystem:
+            self.messagelabel.setText("Для начала создайте криптосистему!")
+            self.messagelabel.adjustSize()
+            return
+        user_text = self.get_file()
+        user_symmetric_key = self.get_file()
+        user_private_key = self.get_file()
+        user_save_text = self.get_file()
+        if user_text and user_symmetric_key and user_private_key and user_save_text:
+            self.cryptosystem.encrypt(user_text, user_symmetric_key, user_private_key, user_save_text)
+            self.messagelabel.setText("Текст зашифрован.")
+            self.messagelabel.adjustSize()
+        else:
+            self.messagelabel.setText("Выберите все файлы.")
+            self.messagelabel.adjustSize()
+            return
+
+    def decrypt_user_text(self) -> None:
+        """
+        Метод дешифрует пользовательсктй текст.
+        """
+        if not self.cryptosystem:
+            self.messagelabel.setText("Для начала создайте криптосистему!")
+            self.messagelabel.adjustSize()
+            return
+        user_encrypted_text = self.get_file()
+        user_symmetric_key = self.get_file()
+        user_private_key = self.get_file()
+        user_save_text = self.get_file()
+        if user_encrypted_text and user_symmetric_key and user_private_key and user_save_text:
+            self.cryptosystem.decrypt(user_encrypted_text, user_symmetric_key, user_private_key, user_save_text)
+            self.messagelabel.setText("Текст разшифрован.")
+            self.messagelabel.adjustSize()
+        else:
+            self.messagelabel.setText("Выберите все файлы.")
+            self.messagelabel.adjustSize()
+            return
 
     def _quit(self) -> None:
         """Получение MessageBox для выхода"""

@@ -15,39 +15,6 @@ class SymmetricKey:
         decrypt_symmetric: Дешифрует текст симметричным ключом ключом.
     """
 
-    def serialize_key(self, path_to_symmetric_key: str, symmetric_key: bytes) -> None:
-        """
-        Метод сериализует симметричный ключ(symmetric_key) в файл path_to_symmetric_key.
-        @param path_to_symmetric_key: путь до файла для симмитричного ключа. Тип str.
-        @param symmetric_key: симметричный ключ. Тип bytes.
-        """
-        try:
-            with open(path_to_symmetric_key, 'wb') as file:
-                file.write(symmetric_key)
-        except FileNotFoundError:
-            print("Файл не найден.")
-            raise
-        except Exception as e:
-            print(f"Произошла ошибка serialize_key: {e}")
-            raise
-
-    def deserialize_key(self, path_to_symmetric_key: str) -> bytes:
-        """
-        Метод десериализует симметричный ключ из файла path_to_symmetric_key.
-        @param path_to_symmetric_key: путь до файла с симметричным ключом. Тип str.
-        @return symmetric_key: симметричный ключ. Тип bytes.
-        """
-        try:
-            with open(path_to_symmetric_key, mode='rb') as key_file:
-                symmetric_key = key_file.read()
-            return symmetric_key
-        except FileNotFoundError:
-            print("Файл не найден.")
-            raise
-        except Exception as e:
-            print(f"Произошла ошибка deserialize_key: {e}")
-            raise
-
     def generate_key(self, number_of_bites: int) -> bytes:
         """
         Метод генерирует симметричный ключ с заданным количеством битов number_of_bites.
@@ -73,7 +40,7 @@ class SymmetricKey:
         try:
             padder = padding.PKCS7(number_of_bites).padder()
             padded_text = padder.update(text) + padder.finalize()
-            iv = os.urandom(int(number_of_bites / 8))
+            iv = os.urandom(8)
             cipher = Cipher(algorithms.TripleDES(symmetric_key), modes.CBC(iv))
             encryptor = cipher.encryptor()
             encrypted_text = encryptor.update(padded_text) + encryptor.finalize()
@@ -93,9 +60,8 @@ class SymmetricKey:
         @return unpadded_decrypted_text.decode('UTF-8'): расшифрованный текст. Тип str.
         """
         try:
-            size_of_key = int(number_of_bites / 8)
-            iv = encrypted_text[: size_of_key]
-            encrypted_text = encrypted_text[size_of_key:]
+            iv = encrypted_text[: 8]
+            encrypted_text = encrypted_text[8:]
             cipher = Cipher(algorithms.TripleDES(symmetric_key), modes.CBC(iv))
             decryptor = cipher.decryptor()
             decrypted_text = decryptor.update(encrypted_text) + decryptor.finalize()
