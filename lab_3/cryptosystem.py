@@ -1,6 +1,5 @@
-import symmetric_key
-import asymmetric_key
-
+from asymmetric_key import AsymmetricKey
+from symmetric_key import SymmetricKey
 from serialization_deserialitation_and_text import read_text, save_text, save_text_str, deserialize_symmetric_key, \
     serialize_symmetric_key, serialize_asymmetric_keys
 
@@ -25,8 +24,8 @@ class Cryptosystem:
         number_of_bits - число битов для шифрования.
         @param number_of_bits:
         """
-        self.symmetric = symmetric_key.SymmetricKey()
-        self.asymmetric = asymmetric_key.AsymmetricKey()
+        self.symmetric = SymmetricKey()
+        self.asymmetric = AsymmetricKey()
         self.number_of_bits = number_of_bits
 
     def generate_keys(self, path_to_symmetric_key: str, path_to_public_key: str, path_to_private_key: str) -> None:

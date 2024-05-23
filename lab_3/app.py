@@ -25,13 +25,16 @@ class Window(QMainWindow):
         __init__: конуструктор
         center: расположение окна в центре экрана
         get_file: получение пути для файла
-        create_by_default: создание криптосистемы по умолчанию
+        load_default_files: загружает файлы из json файла
+        create_cryptosystem: создание криптосистемы
         UiComponents: создание виджета для выбора числа битов.
         find: получение числа битов из окна с выбором числа битов
-        create_by_user: создание криптосистемы с файлами, заданнами пользователем
         generate_keys_for_cryptosystem: создание ключей для криптосистемы
         encrypt_text: шифрование текста с помощью криптосистемы
         decrypt_text: дешифрование сообщения с помощью криптосистемы
+        generate_keys_for_user: генерирует ключи в пользовательские файлы.
+        encrypt_user_text: шифрует пользовательсктй текст.
+        decrypt_user_text: дешифрует пользовательсктй текст.
         _quit: выход из приложения
     """
 
@@ -134,7 +137,10 @@ class Window(QMainWindow):
 
         self.show()
 
-    def load_default_files(self):
+    def load_default_files(self) -> None:
+        """
+        Метод загружает текстовые файлы из json файла.
+        """
         try:
             absolute_path = os.path.abspath(os.getcwd())
             json_data = read_json_file(absolute_path + PATH)
